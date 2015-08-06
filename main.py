@@ -1,15 +1,23 @@
 import time
 import Tkinter as Tk
+import traceback
 
 WIN = Tk.Tk()
+WIN.protocol('WM_DELETE_WINDOW', window_closed)
+WIN.wm_title("Fucky Fun App")
+WIN.resizable(0,0)
+
+top = object
 
 def window_closed():
     global WIN
     WIN.destroy()
 
-WIN.protocol('WM_DELETE_WINDOW', window_closed)
-WIN.wm_title("Fucky Fun App")
-WIN.resizable(0,0)
+def window_show():
+    global WIN
+    global top
+    WIN.deiconify()
+    top.destroy()
 
 class AppGUI(object):
 
@@ -33,6 +41,11 @@ class AppGUI(object):
         self.checkbutton_get_ref_list = Tk.Checkbutton(WIN, text="Checkbox?", variable=self.check_var)
         self.checkbutton_get_ref_list.grid(row=2,column=0)
 
+        self.check_var2 = Tk.IntVar()
+
+        self.checkbutton_get_2 = Tk.Checkbutton(WIN, text="Checkbox?", variable=self.check_var2)
+        self.checkbutton_get_2.grid(row=3,column=0)
+
         self.button = Tk.Button(WIN,text="DO!",command=self.go_callback)
         self.button.grid(row=2,column=1)
 
@@ -42,25 +55,24 @@ class AppGUI(object):
         self.create_dialog()
 
     def create_dialog(self):
-        POP = Tk.Tk()
-        POP.wm_title("DID!")
-        POP.resizable(0,0)
+        global WIN
         WIN.withdraw()
-        POP.withdraw()
         args = [
             self.first_thing_input.get(),
             self.second_thing_input.get(),
             self.check_var.get()
         ]
-        dialog = OpCompleteDialog(POP, args)
-        POP.wait_window(dialog.top)
+        dialog = OpCompleteDialog(WIN, args)
+        WIN.wait_window(dialog.top)
 
 
 class OpCompleteDialog:
 
     def __init__(self, parent, args):
         global WIN
+        global top
         top = self.top = Tk.Toplevel(parent)
+        top.protocol('WM_DELETE_WINDOW', window_show)
         arg_str = ''
         for arg in args:
             arg_str += str(arg) + ' '
