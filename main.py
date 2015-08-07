@@ -1,9 +1,10 @@
+import sqlite3 as sql
+import sys
 import time
 import Tkinter as Tk
 import traceback
 
 WIN = Tk.Tk()
-WIN.protocol('WM_DELETE_WINDOW', window_closed)
 WIN.wm_title("Fucky Fun App")
 WIN.resizable(0,0)
 
@@ -12,6 +13,8 @@ top = object
 def window_closed():
     global WIN
     WIN.destroy()
+
+WIN.protocol('WM_DELETE_WINDOW', window_closed)
 
 def window_show():
     global WIN
@@ -77,9 +80,12 @@ class OpCompleteDialog:
         for arg in args:
             arg_str += str(arg) + ' '
         arg_str = arg_str.strip()
+        version_info = db_version()
         info = (
             arg_str +
-            "\nIt is done."
+            "\nIt is done." +
+            "\nAlso..." +
+            version_info
             )
 
         Tk.Label(top, text=info).pack()
@@ -90,6 +96,23 @@ class OpCompleteDialog:
     def ok(self):
         WIN.deiconify()
         self.top.destroy()
+
+def db_version():
+    sqlite = "\nSQLite Version: "
+    version = sqlite + "Unknown"
+    try:
+        con = sql.connect('core.db')
+        c = con.cursor()
+        c.execute('SELECT SQLITE_VERSION()')
+        version = sqlite + c.fetchone()[0]
+    except sql.Error as e:
+        print "Error %s:" % e.args[0]
+        sys.exit(1)
+    finally:
+        if con:
+            con.close()
+    return version
+
 
 if __name__ == '__main__':
     gui_window = AppGUI()
