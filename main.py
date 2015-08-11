@@ -1,14 +1,24 @@
+#!/usr/bin/env python27
+
 import sqlite3 as sql
 import sys
 import time
 import Tkinter as Tk
 import traceback
 
+# GUI 
+# GAME LOGIC
+# SAVE LOGIC
+# 
+########### BEGINNING OF GUI #################################################
+
+DEBUG = False
+
 WIN = Tk.Tk()
-WIN.wm_title("Fucky Fun App")
+WIN.wm_title("Game 0000")
 WIN.resizable(0,0)
 
-top = object
+top = object # shhh I know.
 
 def window_closed():
     global WIN
@@ -25,7 +35,7 @@ def window_show():
 class AppGUI(object):
 
     def __init__(self):
-        self.label_first_thing = Tk.Label(WIN, text="First thing:")
+        self.label_first_thing = Tk.Label(WIN, text="Name:")
         self.label_first_thing.grid(row=0,column=0)
 
         self.first_thing_input = Tk.StringVar()
@@ -49,7 +59,7 @@ class AppGUI(object):
         self.checkbutton_get_2 = Tk.Checkbutton(WIN, text="Checkbox?", variable=self.check_var2)
         self.checkbutton_get_2.grid(row=3,column=0)
 
-        self.button = Tk.Button(WIN,text="DO!",command=self.go_callback)
+        self.button = Tk.Button(WIN,text="Create character",command=self.go_callback)
         self.button.grid(row=2,column=1)
 
         WIN.mainloop()
@@ -74,6 +84,7 @@ class OpCompleteDialog:
     def __init__(self, parent, args):
         global WIN
         global top
+        global DEBUG
         top = self.top = Tk.Toplevel(parent)
         top.protocol('WM_DELETE_WINDOW', window_show)
         arg_str = ''
@@ -89,6 +100,8 @@ class OpCompleteDialog:
             )
 
         Tk.Label(top, text=info).pack()
+        if DEBUG:
+            print "Tk.Label packed."
 
         button = Tk.Button(top, text="OK", command=self.ok)
         button.pack(pady=5)
@@ -114,5 +127,22 @@ def db_version():
     return version
 
 
+########### END OF GUI #######################################################
+########### BEGINNING OF GAME LOGIC ##########################################
+
+class Actor(object):
+    def __init__(self, name):
+        self.name = name
+
+
+########### END OF GAME LOGIC ################################################
+########### BEGINNING OF SAVE LOGIC ##########################################
+
+# code here
+
+
+########### END OF SAVE LOGIC ################################################
+
+# Instantiate the gui to start the app on script execution
 if __name__ == '__main__':
     gui_window = AppGUI()
