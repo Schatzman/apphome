@@ -18,7 +18,7 @@ WIN = Tk.Tk()
 WIN.wm_title("Game 0000")
 WIN.resizable(0,0)
 
-top = object # shhh I know.
+TOP = object
 
 def window_closed():
     global WIN
@@ -28,9 +28,9 @@ WIN.protocol('WM_DELETE_WINDOW', window_closed)
 
 def window_show():
     global WIN
-    global top
+    global TOP
     WIN.deiconify()
-    top.destroy()
+    TOP.destroy()
 
 class AppGUI(object):
 
@@ -83,10 +83,10 @@ class OpCompleteDialog:
 
     def __init__(self, parent, args):
         global WIN
-        global top
+        global TOP
         global DEBUG
-        top = self.top = Tk.Toplevel(parent)
-        top.protocol('WM_DELETE_WINDOW', window_show)
+        TOP = self.top = Tk.Toplevel(parent)
+        TOP.protocol('WM_DELETE_WINDOW', window_show)
         arg_str = ''
         for arg in args:
             arg_str += str(arg) + ' '
@@ -99,11 +99,11 @@ class OpCompleteDialog:
             version_info
             )
 
-        Tk.Label(top, text=info).pack()
+        Tk.Label(TOP, text=info).pack()
         if DEBUG:
             print "Tk.Label packed."
 
-        button = Tk.Button(top, text="OK", command=self.ok)
+        button = Tk.Button(TOP, text="OK", command=self.ok)
         button.pack(pady=5)
 
     def ok(self):
@@ -130,10 +130,23 @@ def db_version():
 ########### END OF GUI #######################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
 
-class Actor(object):
-    def __init__(self, name):
+class BaseObject(object):
+    def __init__(self, name, description):
         self.name = name
+        self.description = description
+        self.stats = {}
+        self.type = 'base'
 
+class Actor(BaseObject):
+    def __init__(self):
+        super(Actor, self).__init__()
+        self.type = 'being'
+
+class Area(BaseObject):
+    def __init__(self):
+        super(Area, self).__init__()
+        self.type = 'place'
+ 
 
 ########### END OF GAME LOGIC ################################################
 ########### BEGINNING OF SAVE LOGIC ##########################################
@@ -146,3 +159,7 @@ class Actor(object):
 # Instantiate the gui to start the app on script execution
 if __name__ == '__main__':
     gui_window = AppGUI()
+    player = Actor('HeroPerson','The hero of the day!')
+    starting_location = Area('Valley of Trials','Where legends are born.')
+
+    
