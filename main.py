@@ -1,5 +1,4 @@
-#!/usr/bin/env python27
-
+#!/usr/bin/env python2.7
 import sqlite3 as sql
 import sys
 import time
@@ -138,15 +137,15 @@ class BaseObject(object):
         self.type = 'base'
 
 class Actor(BaseObject):
-    def __init__(self):
-        super(Actor, self).__init__()
+    def __init__(self, name, description):
+        super(Actor, self).__init__(name, description)
         self.type = 'being'
 
 class Area(BaseObject):
-    def __init__(self):
-        super(Area, self).__init__()
+    def __init__(self, name, description):
+        super(Area, self).__init__(name, description)
         self.type = 'place'
- 
+
 
 ########### END OF GAME LOGIC ################################################
 ########### BEGINNING OF SAVE LOGIC ##########################################
