@@ -109,6 +109,10 @@ class OpCompleteDialog:
         WIN.deiconify()
         self.top.destroy()
 
+########### END OF GUI #######################################################
+##### DATABASE METHODS #######################################################
+
+
 def db_version():
     sqlite = "\nSQLite Version: "
     version = sqlite + "Unknown"
@@ -125,15 +129,33 @@ def db_version():
             con.close()
     return version
 
-def create_creature_table():
+def create_creature_table(db):
+    commands = [
+        "DROP TABLE IF EXISTS creatures;",
+        '''CREATE TABLE IF NOT EXISTS creatures (
+            date text,
+            name text,
+            description text,
+            stats text,
+            type text,
+            id real,
+            proof text
+            );'''
+    ]
+    return db_commit(db, commands)
+
+def db_call(db, commands, method):
+    result = []
     try:
-        con = sql.connect('core.db')
+        con = sql.connect(db)
         c = con.cursor()
         try:
-            c.execute("CREATE TABLE IF NOT EXISTS creatures(id smallint, name varchar(255));")
-            c.execute("SELECT * FROM sqlite_master WHERE type='table';")
-            tables = c.fetchall()
-            print tables
+            for command in commands:
+                c.execute(command)
+            if method == 'commit':
+                result = con.commit()
+            elif method == 'fetch':
+                result = c.fetchall()
         except:
             print traceback.format_exc()
     except:
@@ -141,11 +163,20 @@ def create_creature_table():
     finally:
         if con:
             con.close()
-    return tables
-    
-create_creature_table()
+        return result
 
-########### END OF GUI #######################################################
+def db_commit(db, commands):
+    return db_call(db, commands, 'commit')
+
+def db_query(db, queries):
+    return db_call(db, queries, 'fetch')
+
+def get_tables(db):
+    queries = ["SELECT * FROM sqlite_master WHERE type='table';"]
+    return db_query(db, queries)
+
+
+########### END OF DB METHODS ################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
 
 class BaseObject(object):
