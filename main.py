@@ -125,7 +125,7 @@ def db_version():
             con.close()
     return version
 
-def create_creature_table(creature):
+def create_creature_table():
     try:
         con = sql.connect('core.db')
         c = con.cursor()
@@ -142,7 +142,8 @@ def create_creature_table(creature):
         if con:
             con.close()
     return tables
-
+    
+create_creature_table()
 
 ########### END OF GUI #######################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
