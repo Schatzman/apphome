@@ -125,12 +125,31 @@ def db_version():
             con.close()
     return version
 
+def create_creature_table(creature):
+    try:
+        con = sql.connect('core.db')
+        c = con.cursor()
+        try:
+            c.execute("CREATE TABLE IF NOT EXISTS 'creatures';")
+            c.execute("SELECT * FROM sqlite_master WHERE type='table';")
+            tables = c.fetchall()
+            print tables
+        except:
+            print traceback.format_exc()
+    except:
+        print traceback.format_exc()
+    finally:
+        if con:
+            con.close()
+    return tables
+
 
 ########### END OF GUI #######################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
 
 class BaseObject(object):
     def __init__(self, name, description):
+        self.id = 0
         self.name = name
         self.description = description
         self.stats = {}
@@ -146,6 +165,19 @@ class Area(BaseObject):
         super(Area, self).__init__(name, description)
         self.type = 'place'
 
+def combat_round():
+    pass
+
+class CombatEngine(object):
+    def __init__(self, combatants):
+        self.combatants = combatants
+
+    def initiative_calculator():
+        for combatant in combatants:
+            self.combatant_dict[combatant.name]
+
+    def combat_round():
+        pass
 
 ########### END OF GAME LOGIC ################################################
 ########### BEGINNING OF SAVE LOGIC ##########################################
