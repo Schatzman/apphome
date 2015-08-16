@@ -130,7 +130,7 @@ def create_creature_table():
         con = sql.connect('core.db')
         c = con.cursor()
         try:
-            c.execute("CREATE TABLE IF NOT EXISTS 'creatures';")
+            c.execute("CREATE TABLE IF NOT EXISTS creatures(id smallint, name varchar(255));")
             c.execute("SELECT * FROM sqlite_master WHERE type='table';")
             tables = c.fetchall()
             print tables
