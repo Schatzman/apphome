@@ -41,7 +41,7 @@ class TestDBFunctions(unittest.TestCase):
         f.close()
 
     def tearDown(self):
-        try:
+        try: #TODO fix for mac
             subprocess.call(['del', self.db], shell=True)
         except:
             print traceback.format_exc()
