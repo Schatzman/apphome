@@ -1,4 +1,5 @@
 #!/usr/bin/env python2.7
+import random
 import sqlite3 as sql
 import sys
 import time
@@ -138,8 +139,21 @@ def create_creature_table(db):
             description text,
             stats text,
             type text,
-            id real,
-            proof text
+            id real
+            );'''
+    ]
+    return db_commit(db, commands)
+
+def create_area_table(db):
+    commands = [
+        "DROP TABLE IF EXISTS areas;",
+        '''CREATE TABLE IF NOT EXISTS areas (
+            date text,
+            name text,
+            description text,
+            stats text,
+            type text,
+            id real
             );'''
     ]
     return db_commit(db, commands)
@@ -191,25 +205,143 @@ class Actor(BaseObject):
     def __init__(self, name, description):
         super(Actor, self).__init__(name, description)
         self.type = 'being'
+        self.total_xp = 0
+        self.next_lvl_xp = 0
+        self.next_lvl_xp_cap = 500
+        self.level = 1
 
 class Area(BaseObject):
     def __init__(self, name, description):
         super(Area, self).__init__(name, description)
         self.type = 'place'
 
-def combat_round():
-    pass
+race_dict = {
+    'human'    : {
+        'st':(9,3),
+        'dx':(8,3),
+        'cn':(8,3),
+        'in':(8,3),
+        'wi':(7,3),
+        'ch':(8,3)
+        },
+    'elf'      : {
+        'st':(8,3),
+        'dx':(9,4),
+        'cn':(7,2),
+        'in':(8,3),
+        'wi':(8,3),
+        'ch':(8,3)
+        },
+    'dwarf'    : {
+        'st':(9,4),
+        'dx':(7,2),
+        'cn':(9,4),
+        'in':(8,3),
+        'wi':(8,3),
+        'ch':(7,2)
+        },
+    'half-elf' : {
+        'st':(8,3),
+        'dx':(8,3),
+        'cn':(8,3),
+        'in':(8,3),
+        'wi':(8,3),
+        'ch':(8,3)
+        },
+    'halfling' : {
+        'st':(6,4),
+        'dx':(9,4),
+        'cn':(9,5),
+        'in':(7,2),
+        'wi':(8,3),
+        'ch':(8,3)
+        },
+    'gnome'    : {
+        'st':(7,2),
+        'dx':(9,4),
+        'cn':(8,3),
+        'in':(9,4),
+        'wi':(8,2),
+        'ch':(7,2)
+        }
+}
 
-class CombatEngine(object):
-    def __init__(self, combatants):
-        self.combatants = combatants
+def generate_stats(race, race_dict):
+    stat_dict = {}
+    if race in race_dict:
+        for stat in race_dict[race]:
+            stat_dict[stat] = race_dict[race][stat][0] + random.randint(0, race_dict[race][stat][1])
+    return stat_dict
 
-    def initiative_calculator():
-        for combatant in combatants:
-            self.combatant_dict[combatant.name]
+def level_up(creature):
+    creature.level += 1
 
-    def combat_round():
-        pass
+def gain_exp(creature, xp):
+    creature.total_xp += xp
+    creature.next_lvl_xp += xp
+    if creature.next_lvl_xp >= creature.next_lvl_xp_cap:
+        level_up(creature)
+        print (
+            "%s leveled up! %s is now level %s." % (
+                creature.name,
+                creature.name,
+                str(creature.level)
+                )
+            )
+        creature.next_lvl_xp = 0
+        creature.next_lvl_xp_cap += creature.next_lvl_xp_cap * 0.04
+    if creature.level % 3 == 0:
+        attr_gain(creature)
+
+def attr_gain(creature):
+    stat_ls = ['st','dx','cn','in','wi','ch']
+    stat = random.randint(0, len(stat_ls) - 1)
+    creature.stats[stat_ls[stat]] += 1
+    print (
+        "%s's %s increased from %s to %s." % (
+            creature.name,
+            stat_ls[stat],
+            creature.stats[stat_ls[stat]]-1,
+            creature.stats[stat_ls[stat]]
+            )
+        )
+
+def initiative_calculator(combatants):
+    for combatant in combatants:
+        self.combatant_dict[combatant.name]
+
+def combat_round(attacker, defender):
+    attack_roll = random.randint(0, attacker.stats['dx'])
+    defense_roll = random.randint(0, defender.stats['dx'])
+    if attack_roll > defense_roll:
+        damage_roll = random.randint(0, attacker.stats['st'])
+        soak_roll = (random.randint(0, defender.stats['cn'])) * 0.5
+        damage = int((damage_roll - soak_roll) + 1)
+        if damage < 0:
+            damage = 0
+        s = ''
+        if damage != 1:
+            s = 's'
+        print ("%s hits %s for %s point%s of damage!" % (attacker.name, defender.name, str(damage), s))
+    else:
+        print ("%s misses %s!" % (attacker.name, defender.name))
+
+critter = Actor('Testguy','testy')
+print "Testguy created."
+critter2 = Actor('Testguy2','testy')
+print "Testguy2 created."
+stats = generate_stats('elf', race_dict)
+stats2 = generate_stats('dwarf', race_dict)
+print stats
+print stats2
+critter.stats = stats
+critter2.stats = stats2
+for i in xrange(900):
+    combat_round(critter, critter2)
+    gain_exp(critter, 500)
+    gain_exp(critter2, 400)
+print critter.stats
+print critter2.stats
 
 ########### END OF GAME LOGIC ################################################
 ########### BEGINNING OF SAVE LOGIC ##########################################

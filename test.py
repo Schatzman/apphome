@@ -67,16 +67,14 @@ class TestDBFunctions(unittest.TestCase):
             'This is a test',
             '{}',
             'being',
-            0,
-            'proof'
+            0
             );'''
         self.answers_tuple = (
             u'2006-01-05',
             u'Test Creature Name 0',
             u'This is a test', u'{}',
             u'being',
-            0.0,
-            u'proof'
+            0.0
         )
         main.db_commit(self.db, [self.insert_statement])
         self.query = main.db_query(self.db, ["SELECT * FROM creatures;"])[0]
