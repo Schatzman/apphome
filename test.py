@@ -10,6 +10,7 @@ class TestLogicObjects(unittest.TestCase):
         self.case_name = 'TestLogicObjects'
         self.actor = main.Actor('test actor','test actor description')
         self.area = main.Area('test area','test area description')
+        self.race_dict = main.read_yaml('monsters.yaml')['race_dict']
 
     def tearDown(self):
         pass
@@ -32,10 +33,30 @@ class TestLogicObjects(unittest.TestCase):
         print t_name + " PASSED..."
 
     def test_gen_stats(self):
-        pass
+        stats = main.generate_stats('elf', self.race_dict)
+        self.assertTrue(stats['st'] > 0)
+        self.assertTrue(stats['dx'] > 0)
+        self.assertTrue(stats['cn'] > 0)
+        self.assertTrue(stats['in'] > 0)
+        self.assertTrue(stats['wi'] > 0)
+        self.assertTrue(stats['ch'] > 0)
 
     def test_create_creature(self):
-        pass
+        test_name = 'Testy'
+        test_race = 'Human'
+        test_description = 'This is a test...'
+        critter = (
+            main.create_creature(
+                test_name,
+                test_race,
+                test_description,
+                self.race_dict
+                )
+            )
+        print critter.stats
+        self.assertTrue(critter.name == test_name)
+        self.assertTrue(critter.race == test_race)
+        self.assertTrue(critter.stats['dx'] > 0)
 
 
 # critter = Actor('Testguy','testy')

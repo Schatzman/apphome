@@ -1,0 +1,47 @@
+# Monsters and various creature stats.
+# Yes. Humans are monsters.
+
+race_dict:
+    human: 
+        st: [9,3]
+        dx: [8,3]
+        cn: [8,3]
+        in: [8,3]
+        wi: [7,3]
+        ch: [8,3]
+    elf: 
+        st: [8,3]
+        dx: [9,4]
+        cn: [7,2]
+        in: [8,3]
+        wi: [8,3]
+        ch: [8,3]
+    dwarf: 
+        st: [9,4]
+        dx: [7,2]
+        cn: [9,4]
+        in: [8,3]
+        wi: [8,3]
+        ch: [7,2]
+    half-elf: 
+        st: [8,3]
+        dx: [8,3]
+        cn: [8,3]
+        in: [8,3]
+        wi: [8,3]
+        ch: [8,3]
+    halfling: 
+        st: [6,4]
+        dx: [9,4]
+        cn: [9,5]
+        in: [7,2]
+        wi: [8,3]
+        ch: [8,3]
+    gnome: 
+        st: [7,2]
+        dx: [9,4]
+        cn: [8,3]
+        in: [9,4]
+        wi: [8,2]
+        ch: [7,2]
+

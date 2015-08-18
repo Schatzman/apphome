@@ -1,11 +1,12 @@
 #!/usr/bin/env python2.7
+from pprint import pprint
 import random
 import sqlite3 as sql
 import sys
 import time
 import Tkinter as Tk
 import traceback
-
+import yaml
 # GUI 
 # GAME LOGIC
 # SAVE LOGIC
@@ -215,56 +216,10 @@ class Area(BaseObject):
         super(Area, self).__init__(name, description)
         self.type = 'place'
 
-race_dict = {
-    'human'    : {
-        'st':(9,3),
-        'dx':(8,3),
-        'cn':(8,3),
-        'in':(8,3),
-        'wi':(7,3),
-        'ch':(8,3)
-        },
-    'elf'      : {
-        'st':(8,3),
-        'dx':(9,4),
-        'cn':(7,2),
-        'in':(8,3),
-        'wi':(8,3),
-        'ch':(8,3)
-        },
-    'dwarf'    : {
-        'st':(9,4),
-        'dx':(7,2),
-        'cn':(9,4),
-        'in':(8,3),
-        'wi':(8,3),
-        'ch':(7,2)
-        },
-    'half-elf' : {
-        'st':(8,3),
-        'dx':(8,3),
-        'cn':(8,3),
-        'in':(8,3),
-        'wi':(8,3),
-        'ch':(8,3)
-        },
-    'halfling' : {
-        'st':(6,4),
-        'dx':(9,4),
-        'cn':(9,5),
-        'in':(7,2),
-        'wi':(8,3),
-        'ch':(8,3)
-        },
-    'gnome'    : {
-        'st':(7,2),
-        'dx':(9,4),
-        'cn':(8,3),
-        'in':(9,4),
-        'wi':(8,2),
-        'ch':(7,2)
-        }
-}
+def read_yaml(filename):
+    stream = file(filename, 'r')
+    result = yaml.load(stream)
+    return result
 
 def generate_stats(race, race_dict):
     stat_dict = {}
@@ -273,12 +228,12 @@ def generate_stats(race, race_dict):
             stat_dict[stat] = race_dict[race][stat][0] + random.randint(0, race_dict[race][stat][1])
     return stat_dict
 
-def create_creature(name, race, race_dict):
-    pass
-
-# critter = Actor('Testguy','testy')
-# stats = generate_stats('elf', race_dict)
-# critter.stats = stats
+def create_creature(name, race, description, race_dict):
+    creature = Actor(name, description)
+    stats = generate_stats(race, race_dict)
+    creature.stats = stats
+    creature.race = race
+    return creature
 
 def level_up(creature):
     creature.level += 1
