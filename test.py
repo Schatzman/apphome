@@ -31,6 +31,29 @@ class TestLogicObjects(unittest.TestCase):
         self.assertTrue(self.area.type == 'place')
         print t_name + " PASSED..."
 
+    def test_gen_stats(self):
+        pass
+
+    def test_create_creature(self):
+        pass
+
+
+# critter = Actor('Testguy','testy')
+# print "Testguy created."
+# critter2 = Actor('Testguy2','testy')
+# print "Testguy2 created."
+# stats = generate_stats('elf', race_dict)
+# stats2 = generate_stats('dwarf', race_dict)
+# print stats
+# print stats2
+# critter.stats = stats
+# critter2.stats = stats2
+# for i in xrange(900):
+#     combat_round(critter, critter2)
+#     gain_exp(critter, 500)
+#     gain_exp(critter2, 400)
+# print critter.stats
+# print critter2.stats
 
 class TestDBFunctions(unittest.TestCase):
 

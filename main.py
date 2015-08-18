@@ -273,6 +273,13 @@ def generate_stats(race, race_dict):
             stat_dict[stat] = race_dict[race][stat][0] + random.randint(0, race_dict[race][stat][1])
     return stat_dict
 
+def create_creature(name, race, race_dict):
+    pass
+
+# critter = Actor('Testguy','testy')
+# stats = generate_stats('elf', race_dict)
+# critter.stats = stats
+
 def level_up(creature):
     creature.level += 1
 
@@ -326,22 +333,7 @@ def combat_round(attacker, defender):
     else:
         print ("%s misses %s!" % (attacker.name, defender.name))
 
-critter = Actor('Testguy','testy')
-print "Testguy created."
-critter2 = Actor('Testguy2','testy')
-print "Testguy2 created."
-stats = generate_stats('elf', race_dict)
-stats2 = generate_stats('dwarf', race_dict)
-print stats
-print stats2
-critter.stats = stats
-critter2.stats = stats2
-for i in xrange(900):
-    combat_round(critter, critter2)
-    gain_exp(critter, 500)
-    gain_exp(critter2, 400)
-print critter.stats
-print critter2.stats
+
 
 ########### END OF GAME LOGIC ################################################
 ########### BEGINNING OF SAVE LOGIC ##########################################
