@@ -199,17 +199,17 @@ class BaseObject(object):
         self.id = 0
         self.name = name
         self.description = description
-        self.stats = {}
         self.type = 'base'
 
 class Actor(BaseObject):
-    def __init__(self, name, description):
+    def __init__(self, name, description, stats):
         super(Actor, self).__init__(name, description)
         self.type = 'being'
         self.total_xp = 0
         self.next_lvl_xp = 0
         self.next_lvl_xp_cap = 500
         self.level = 1
+        self.stats = stats
 
 class Area(BaseObject):
     def __init__(self, name, description):
@@ -229,9 +229,8 @@ def generate_stats(race, race_dict):
     return stat_dict
 
 def create_creature(name, race, description, race_dict):
-    creature = Actor(name, description)
     stats = generate_stats(race, race_dict)
-    creature.stats = stats
+    creature = Actor(name, description, stats)
     creature.race = race
     return creature
 

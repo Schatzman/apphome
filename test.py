@@ -8,12 +8,16 @@ class TestLogicObjects(unittest.TestCase):
 
     def setUp(self):
         self.case_name = 'TestLogicObjects'
-        self.actor = main.Actor('test actor','test actor description')
+        print "\nTestLogicObjects "
+        self.actor = main.Actor('test actor','test actor description', {})
         self.area = main.Area('test area','test area description')
         self.race_dict = main.read_yaml('monsters.yaml')['race_dict']
+        self.test_name = 'Testy'
+        self.test_race = 'human'
+        self.test_description = 'This is a test...'
 
     def tearDown(self):
-        pass
+        print "\nEND OF TestLogicObjects "
 
 
     def test_actor(self):
@@ -42,21 +46,36 @@ class TestLogicObjects(unittest.TestCase):
         self.assertTrue(stats['ch'] > 0)
 
     def test_create_creature(self):
-        test_name = 'Testy'
-        test_race = 'Human'
-        test_description = 'This is a test...'
         critter = (
             main.create_creature(
-                test_name,
-                test_race,
-                test_description,
+                self.test_name,
+                self.test_race,
+                self.test_description,
                 self.race_dict
                 )
             )
-        print critter.stats
-        self.assertTrue(critter.name == test_name)
-        self.assertTrue(critter.race == test_race)
+        self.assertTrue(critter.name == self.test_name)
+        self.assertTrue(critter.race == self.test_race)
+        self.assertTrue(critter.description == self.test_description)
+        self.assertTrue(critter.stats['st'] > 0)
         self.assertTrue(critter.stats['dx'] > 0)
+        self.assertTrue(critter.stats['cn'] > 0)
+        self.assertTrue(critter.stats['in'] > 0)
+        self.assertTrue(critter.stats['wi'] > 0)
+        self.assertTrue(critter.stats['ch'] > 0)
+
+    def confirm_creature_levels(self):
+        critter = (
+            main.create_creature(
+                self.test_name,
+                self.test_race,
+                self.test_description,
+                self.race_dict
+                )
+            )
+        for i in xrange(2000):
+            gain_exp(critter, 25)
+        print critter.level
 
 
 # critter = Actor('Testguy','testy')
@@ -69,10 +88,10 @@ class TestLogicObjects(unittest.TestCase):
 # print stats2
 # critter.stats = stats
 # critter2.stats = stats2
-# for i in xrange(900):
+# for i in xrange(2000):
 #     combat_round(critter, critter2)
-#     gain_exp(critter, 500)
-#     gain_exp(critter2, 400)
+#     gain_exp(critter, 25)
+
 # print critter.stats
 # print critter2.stats
 
@@ -80,6 +99,7 @@ class TestDBFunctions(unittest.TestCase):
 
     def setUp(self):
         self.case_name = 'TestDBFunctions'
+        print "\nTestDBFunctions "
         self.db = 'test.db'
         f = open(self.db, 'w')
         f.close()
@@ -89,6 +109,7 @@ class TestDBFunctions(unittest.TestCase):
             subprocess.call(['del', self.db], shell=True)
         except:
             print traceback.format_exc()
+        print "\nEND OF TestDBFunctions "
 
     def test_create_table(self):
         t_name = self.case_name + '.test_create_table'
