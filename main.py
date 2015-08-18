@@ -216,6 +216,10 @@ class Area(BaseObject):
         super(Area, self).__init__(name, description)
         self.type = 'place'
 
+class GameEngine(object):
+    def __init__(self):
+        pass
+
 def read_yaml(filename):
     stream = file(filename, 'r')
     result = yaml.load(stream)
