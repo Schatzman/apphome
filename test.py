@@ -64,7 +64,7 @@ class TestLogicObjects(unittest.TestCase):
         self.assertTrue(critter.stats['wi'] > 0)
         self.assertTrue(critter.stats['ch'] > 0)
 
-    def confirm_creature_levels(self):
+    def test_creature_levels(self):
         critter = (
             main.create_creature(
                 self.test_name,
