@@ -74,5 +74,3 @@ def attr_gain(creature):
 	if creature.level % 3 == 0:
 		stat = random.randint(0, len(stat_ls))
 	creature.stats[stat_ls[stat]] += 1
-
-

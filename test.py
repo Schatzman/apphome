@@ -132,6 +132,7 @@ class TestDBFunctions(unittest.TestCase):
             'This is a test',
             '{}',
             'being',
+            'placeholder pickle string',
             0
             );'''
         self.answers_tuple = (
@@ -139,6 +140,7 @@ class TestDBFunctions(unittest.TestCase):
             u'Test Creature Name 0',
             u'This is a test', u'{}',
             u'being',
+            u'placeholder pickle string',
             0.0
         )
         main.db_commit(self.db, [self.insert_statement])

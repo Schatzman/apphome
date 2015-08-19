@@ -137,6 +137,7 @@ def create_creature_table(db):
             description text,
             stats text,
             type text,
+            pickled_obj text,
             id real
             );'''
     ]
@@ -151,6 +152,7 @@ def create_area_table(db):
             description text,
             stats text,
             type text,
+            pickled_obj text,
             id real
             );'''
     ]
