@@ -204,6 +204,7 @@ def save_creature(db, creature):
         0
         );
     ''')
+    db_commit(db, [insert_statement])
 
 ########### END OF DB METHODS ################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
