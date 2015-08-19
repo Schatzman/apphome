@@ -1,4 +1,6 @@
 #!/usr/bin/env python2.7
+import datetime
+import pickle
 from pprint import pprint
 import random
 import sqlite3 as sql
@@ -189,6 +191,20 @@ def get_tables(db):
     queries = ["SELECT * FROM sqlite_master WHERE type='table';"]
     return db_query(db, queries)
 
+def save_creature(db, creature):
+    picklestring = pickle.dumps(creature)
+    insert_statement = ('''
+    INSERT INTO creatures VALUES (
+        %s, (date)
+        %s, (name)
+        'This is a test',
+        '{}',
+        'being',
+        'placeholder pickle string',
+        0
+        );
+    ''')
+
 ########### END OF DB METHODS ################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
 
@@ -203,6 +219,7 @@ class BaseObject(object):
 class Actor(BaseObject):
     def __init__(self, name, description, stats):
         super(Actor, self).__init__(name, description)
+        self.creation_date = datetime.datetime.utcnow()
         self.type = 'being'
         self.total_xp = 0
         self.next_lvl_xp = 0
