@@ -241,35 +241,37 @@ def create_creature(name, race, description, race_dict):
 def level_up(creature):
     creature.level += 1
 
-def gain_exp(creature, xp):
+def gain_exp(creature, xp, silent=False):
     creature.total_xp += xp
     creature.next_lvl_xp += xp
     if creature.next_lvl_xp >= creature.next_lvl_xp_cap:
         level_up(creature)
-        print (
-            "%s leveled up! %s is now level %s." % (
-                creature.name,
-                creature.name,
-                str(creature.level)
+        if not silent:
+            print (
+                "%s leveled up! %s is now level %s." % (
+                    creature.name,
+                    creature.name,
+                    str(creature.level)
+                    )
                 )
-            )
         creature.next_lvl_xp = 0
         creature.next_lvl_xp_cap += creature.next_lvl_xp_cap * 0.04
-    if creature.level % 3 == 0:
-        attr_gain(creature)
+        if creature.level % 2 == 0:
+            attr_gain(creature, silent)
 
-def attr_gain(creature):
+def attr_gain(creature, silent=False):
     stat_ls = ['st','dx','cn','in','wi','ch']
     stat = random.randint(0, len(stat_ls) - 1)
     creature.stats[stat_ls[stat]] += 1
-    print (
-        "%s's %s increased from %s to %s." % (
-            creature.name,
-            stat_ls[stat],
-            creature.stats[stat_ls[stat]]-1,
-            creature.stats[stat_ls[stat]]
+    if not silent:
+        print (
+            "%s's %s increased from %s to %s." % (
+                creature.name,
+                stat_ls[stat],
+                creature.stats[stat_ls[stat]]-1,
+                creature.stats[stat_ls[stat]]
+                )
             )
-        )
 
 def initiative_calculator(combatants):
     for combatant in combatants:

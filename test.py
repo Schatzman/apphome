@@ -74,8 +74,8 @@ class TestLogicObjects(unittest.TestCase):
                 )
             )
         for i in xrange(2000):
-            gain_exp(critter, 25)
-        print critter.level
+            main.gain_exp(critter, 25, True)
+        self.assertTrue(critter.level > 40)
 
 
 # critter = Actor('Testguy','testy')
