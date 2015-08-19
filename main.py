@@ -7,10 +7,7 @@ import time
 import Tkinter as Tk
 import traceback
 import yaml
-# GUI 
-# GAME LOGIC
-# SAVE LOGIC
-# 
+
 ########### BEGINNING OF GUI #################################################
 
 DEBUG = False
