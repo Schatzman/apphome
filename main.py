@@ -257,9 +257,9 @@ def gain_exp(creature, xp, silent=False):
         creature.next_lvl_xp = 0
         creature.next_lvl_xp_cap += creature.next_lvl_xp_cap * 0.04
         if creature.level % 2 == 0:
-            attr_gain(creature, silent)
+            gain_attr(creature, silent)
 
-def attr_gain(creature, silent=False):
+def gain_attr(creature, silent=False):
     stat_ls = ['st','dx','cn','in','wi','ch']
     stat = random.randint(0, len(stat_ls) - 1)
     creature.stats[stat_ls[stat]] += 1
