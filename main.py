@@ -190,7 +190,6 @@ def get_tables(db):
     queries = ["SELECT * FROM sqlite_master WHERE type='table';"]
     return db_query(db, queries)
 
-
 ########### END OF DB METHODS ################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
 
@@ -200,6 +199,7 @@ class BaseObject(object):
         self.name = name
         self.description = description
         self.type = 'base'
+
 
 class Actor(BaseObject):
     def __init__(self, name, description, stats):
@@ -211,10 +211,12 @@ class Actor(BaseObject):
         self.level = 1
         self.stats = stats
 
+
 class Area(BaseObject):
     def __init__(self, name, description):
         super(Area, self).__init__(name, description)
         self.type = 'place'
+
 
 class GameEngine(object):
     def __init__(self):
