@@ -133,7 +133,7 @@ def db_version():
 
 def create_creature_table(db):
     commands = [
-        "DROP TABLE IF EXISTS creatures;",
+        'DROP TABLE IF EXISTS creatures;',
         '''CREATE TABLE IF NOT EXISTS creatures (
             date text,
             name text,
