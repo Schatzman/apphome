@@ -147,7 +147,7 @@ def create_creature_table(db):
 
 def create_area_table(db):
     commands = [
-        "DROP TABLE IF EXISTS areas;",
+        'DROP TABLE IF EXISTS areas;',
         '''CREATE TABLE IF NOT EXISTS areas (
             date text,
             name text,
