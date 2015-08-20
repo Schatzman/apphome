@@ -231,6 +231,7 @@ class Actor(BaseObject):
             [method for method in dir(self) if callable(getattr(self, method))]
         )
     def __to_dict(self):
+        {attr for attr in dir(self)}
 
 
 
