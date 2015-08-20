@@ -192,7 +192,7 @@ def get_tables(db):
     return db_query(db, queries)
 
 def save_creature(db, creature):
-    picklestring = pickle.dumps(creature)
+    pickled_creature = pickle.dumps(creature)
     insert_statement = ('''
     INSERT INTO creatures VALUES (
         %s, (date)
@@ -203,7 +203,7 @@ def save_creature(db, creature):
         'placeholder pickle string',
         0
         );
-    ''')
+    ''' % creature.creation_date) 
     db_commit(db, [insert_statement])
 
 ########### END OF DB METHODS ################################################
@@ -227,6 +227,11 @@ class Actor(BaseObject):
         self.next_lvl_xp_cap = 500
         self.level = 1
         self.stats = stats
+        self.methods = (
+            [method for method in dir(self) if callable(getattr(self, method))]
+        )
+    def __to_dict(self):
+
 
 
 class Area(BaseObject):
