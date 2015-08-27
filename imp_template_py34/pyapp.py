@@ -44,11 +44,6 @@ class Window(object):
 
     def auto_configure(self):
         self.yaml_dump = read_yaml(self.config_file)
-        # print("***** TYPE OF SELF.YAML_DUMP!! ***** ")
-        # print(type(self.yaml_dump))
-        # print("***** REPR OF SELF.YAML_DUMP!! ***** ")
-        # print(repr(self.yaml_dump))
-        # print("xxxxx XXXXX BEYOND HERE ARE ERRORS!! XXXXX xxxxx")
         cfg_data = self.yaml_dump
         prtcl_name = cfg_data["protocol"]
         resize = cfg_data["resizeable"]
@@ -56,8 +51,6 @@ class Window(object):
         title = cfg_data["title"]
         x = cfg_data["width"]
         y = cfg_data["height"]
-        # time.sleep(3)
-        # print('3 seconds to configuration...')
         self.configure(
             prtcl_name,
             resize,
