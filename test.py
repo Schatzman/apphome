@@ -127,9 +127,9 @@ class TestDBFunctions(unittest.TestCase):
         print "\nStarting %s..." % t_name
         main.create_creature_table(self.db)
         self.insert_statement = '''INSERT INTO creatures VALUES (
-            '2006-01-05',
-            'Test Creature Name 0',
-            'This is a test',
+            '8/21/2015',
+            'Test Creature Name 001',
+            'This is a test. Don\'t panic.',
             '{}',
             'being',
             'placeholder pickle string',

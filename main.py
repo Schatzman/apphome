@@ -134,13 +134,13 @@ def create_creature_table(db):
     commands = [
         'DROP TABLE IF EXISTS creatures;',
         '''CREATE TABLE IF NOT EXISTS creatures (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
             date text,
             name text,
             description text,
             stats text,
             type text,
-            pickled_obj text,
-            id real
+            pickled_obj text
             );'''
     ]
     return db_commit(db, commands)
@@ -149,13 +149,13 @@ def create_area_table(db):
     commands = [
         'DROP TABLE IF EXISTS areas;',
         '''CREATE TABLE IF NOT EXISTS areas (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
             date text,
             name text,
             description text,
             stats text,
             type text,
-            pickled_obj text,
-            id real
+            pickled_obj text
             );'''
     ]
     return db_commit(db, commands)
@@ -165,6 +165,7 @@ def db_call(db, commands, method):
     try:
         con = sql.connect(db)
         c = con.cursor()
+        import pdb; pdb.set_trace()
         try:
             for command in commands:
                 c.execute(command)
@@ -193,18 +194,23 @@ def get_tables(db):
 
 def save_creature(db, creature):
     pickled_creature = pickle.dumps(creature)
-    insert_statement = ('''
-    INSERT INTO creatures VALUES (
-        %s, (date)
-        %s, (name)
-        'This is a test',
-        '{}',
-        'being',
-        'placeholder pickle string',
-        0
-        );
-    ''' % creature.creation_date) 
+    insert_statement = (
+        ('INSERT INTO creatures VALUES (' +
+        '{0}, {1}, {2}, {3}, {4}, {5}' +
+        ');').format(
+        creature.creation_date.strftime('%-m/%-d/%Y'),
+        creature.name,
+        creature.description,
+        repr(creature.stats),
+        creature.type,
+        pickled_creature
+        )
+    print 'arrived here...'
+    import pdb; pdb.set_trace()
     db_commit(db, [insert_statement])
+
+def load_creature(db, creature):
+    import pdb; pdb.set_trace()
 
 ########### END OF DB METHODS ################################################
 ########### BEGINNING OF GAME LOGIC ##########################################
@@ -230,10 +236,6 @@ class Actor(BaseObject):
         self.methods = (
             [method for method in dir(self) if callable(getattr(self, method))]
         )
-    def __to_dict(self):
-        {attr for attr in dir(self)}
-
-
 
 class Area(BaseObject):
     def __init__(self, name, description):
@@ -331,7 +333,8 @@ def combat_round(attacker, defender):
 # Instantiate the gui to start the app on script execution
 if __name__ == '__main__':
     gui_window = AppGUI()
-    player = Actor('HeroPerson','The hero of the day!')
+    race_dict = read_yaml('monsters.yaml')['race_dict']
+    player = create_creature('HeroPerson', 'dwarf', 'The hero of the day!', race_dict)
     starting_location = Area('Valley of Trials','Where legends are born.')
-
+    import pdb; pdb.set_trace()
     
